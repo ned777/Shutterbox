@@ -25,3 +25,14 @@ logging.basicConfig(
 )
 log = logging.getLogger("sorter")
 
+def extract_photo_datetime(path):
+    try:
+        with Image.open(path) as im:
+            exif = im._getexif()
+            if not exif: return None
+            for tag_id, value in exif.items():
+                if ExifTags.TAGS.get(tag_id) == "DateTimeOriginal" and isinstance(value, str):
+                    try: return datetime.strptime(value, "%Y:%m:%d %H:%M:%S")
+                    except ValueError: return None
+    except Exception: pass
+    return None
