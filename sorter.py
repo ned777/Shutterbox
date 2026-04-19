@@ -92,3 +92,17 @@ def is_temp(path):
             name.endswith(".tmp") or
             "_BACK" in name or
             "_BACK_SEAMLESS" in name)
+
+def walk_landing():
+    if not LANDING_DIR.exists():
+        log.error("Landing dir missing: %s", LANDING_DIR)
+        return
+    stats = {"moved": 0, "dup": 0, "skip": 0, "error": 0, "not_quiesced": 0}
+    for path in LANDING_DIR.rglob("*"):
+        if not path.is_file() or is_temp(path): continue
+        if not is_quiesced(path):
+            stats["not_quiesced"] += 1
+            continue
+        stats[process_file(path)] += 1
+    if any(v > 0 for v in stats.values()):
+        log.info("Pass: %s", stats)
