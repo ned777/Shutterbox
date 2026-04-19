@@ -1,0 +1,15 @@
+[Unit]
+Description=Phone media sorter
+After=network-online.target
+
+[Service]
+Type=simple
+User=nnguyen
+Group=nnguyen
+WorkingDirectory=/home/nnguyen/scripts/media-sorter
+ExecStart=/home/nnguyen/scripts/media-sorter/venv/bin/python3 /home/nnguyen/scripts/media-sorter/sorter.py
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
