@@ -52,3 +52,10 @@ def extract_video_datetime(path):
     return None
 
 def process_file(path):
+    ext = path.suffix.lower()
+    if ext in PHOTO_EXTS:
+        kind, dest_root, dt = "photo", PHOTO_DEST, extract_photo_datetime(path)
+    elif ext in VIDEO_EXTS:
+        kind, dest_root, dt = "video", VIDEO_DEST, extract_video_datetime(path)
+    else:
+        return "skip"
