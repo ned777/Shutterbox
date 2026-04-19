@@ -59,3 +59,24 @@ def process_file(path):
         kind, dest_root, dt = "video", VIDEO_DEST, extract_video_datetime(path)
     else:
         return "skip"
+    
+        if dt is None:
+        dt = datetime.fromtimestamp(path.stat().st_mtime)
+
+    target_dir = dest_root / str(dt.year)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target = target_dir / path.name
+
+    if target.exists():
+        log.info("DUP skip: %s already in %s — deleting from inbox", path.name, target_dir)
+        try: path.unlink()
+        except Exception as e: log.warning("Couldn't delete duplicate %s: %s", path.name, e)
+        return "dup"
+
+    try:
+        shutil.move(str(path), str(target))
+        log.info("MOVED %s: %s -> %s", kind, path.name, target)
+        return "moved"
+    except Exception as e:
+        log.error("Move failed for %s: %s", path.name, e)
+        return "error"
