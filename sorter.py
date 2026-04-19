@@ -106,3 +106,15 @@ def walk_landing():
         stats[process_file(path)] += 1
     if any(v > 0 for v in stats.values()):
         log.info("Pass: %s", stats)
+
+def main():
+    log.info("Sorter starting | Landing: %s | Photos: %s | Videos: %s",
+             LANDING_DIR, PHOTO_DEST, VIDEO_DEST)
+    while True:
+        try: walk_landing()
+        except KeyboardInterrupt: sys.exit(0)
+        except Exception: log.exception("Error in walk_landing")
+        time.sleep(POLL_INTERVAL)
+
+if __name__ == "__main__":
+    main()
