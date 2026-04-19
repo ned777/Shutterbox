@@ -50,3 +50,5 @@ def extract_video_datetime(path):
                 except ValueError: continue
     except Exception: pass
     return None
+
+def process_file(path):
