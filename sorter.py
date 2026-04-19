@@ -36,3 +36,17 @@ def extract_photo_datetime(path):
                     except ValueError: return None
     except Exception: pass
     return None
+
+def extract_video_datetime(path):
+    try:
+        mi = MediaInfo.parse(str(path))
+        for track in mi.tracks:
+            if track.track_type != "General": continue
+            for attr in ("encoded_date", "tagged_date", "recorded_date"):
+                val = getattr(track, attr, None)
+                if not val: continue
+                cleaned = val.replace("UTC", "").replace("T", " ").strip()
+                try: return datetime.strptime(cleaned.split(".")[0], "%Y-%m-%d %H:%M:%S")
+                except ValueError: continue
+    except Exception: pass
+    return None
