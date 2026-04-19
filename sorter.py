@@ -80,3 +80,15 @@ def process_file(path):
     except Exception as e:
         log.error("Move failed for %s: %s", path.name, e)
         return "error"
+    
+    def is_quiesced(path):
+    try: return (time.time() - path.stat().st_mtime) >= QUIESCE_SECONDS
+    except Exception: return False
+
+def is_temp(path):
+    """Skip Samsung temp files, hidden files, and partial transfers."""
+    name = path.name
+    return (name.startswith(".") or
+            name.endswith(".tmp") or
+            "_BACK" in name or
+            "_BACK_SEAMLESS" in name)
