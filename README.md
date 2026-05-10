@@ -196,9 +196,7 @@ Full troubleshooting in `docs/05-troubleshooting.md`.
 
 Issues and PRs welcome. If you adapted this for a different server OS, different drive layout, or different camera-app filter set, a PR with your changes (or even just a note in `docs/`) helps the next person.
 
-## Lessons from building this
 
-A `LESSONS.md` lives in the repo root with notes on the dead ends — what didn't work and why. Worth reading before assuming a different approach (Immich, Syncthing, Nextcloud's auto-upload) would be simpler. They might be, but I tried them and these are the issues I hit.
 
 ## License
 
